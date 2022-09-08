@@ -333,31 +333,6 @@ class ApmServer {
       return
     }
 
-    /*    const apiVersion = cfg.get('apiVersion')
-        /!**
-         * Enable payload compression only when API version is > 2
-         *!/
-        const compress = apiVersion > 2
-
-        let ndjson = []
-        const metadata = this.createMetaData()
-        const metadataKey = compress ? 'm' : 'metadata'
-
-        ndjson.push(
-          NDJSON.stringify({
-            [metadataKey]: compress ? compressMetadata(metadata) : metadata
-          })
-        )
-
-        ndjson = ndjson.concat(
-          this.ndjsonErrors(filteredPayload[ERRORS], compress),
-          this.ndjsonTransactions(filteredPayload[TRANSACTIONS], compress)
-        )
-        const ndjsonPayload = ndjson.join('')
-        const {intakeEndpoint} = this.getEndpoints()
-
-        return this._postJson(intakeEndpoint, ndjsonPayload)*/
-
     const isTop = isTopWindow()
     if(this._configService.get('session')){
       if (isTop) {
@@ -390,7 +365,7 @@ class ApmServer {
   }
 
   sendEventsNext(filteredPayload) {
-    const apiVersion = cfg.get('apiVersion')
+    const apiVersion = this._configService.get('apiVersion')
     /**
      * Enable payload compression only when API version is > 2
      */
@@ -405,7 +380,6 @@ class ApmServer {
         [metadataKey]: compress ? compressMetadata(metadata) : metadata
       })
     )
-
 
     ndjson = ndjson.concat(
       this.ndjsonErrors(filteredPayload[ERRORS], compress),
